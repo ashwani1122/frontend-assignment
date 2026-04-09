@@ -182,7 +182,7 @@ export default function WallCalendarChallenge() {
             </div>
 
             {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-y-2 gap-x-1">
+            <div className="grid grid-cols-7 gap-y-2 gap-x-1 shadow-lg">
               {renderDays()}
             </div>
           </div>
