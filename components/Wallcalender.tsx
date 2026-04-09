@@ -88,8 +88,8 @@ export default function WallCalendarChallenge() {
           relative z-10 w-full h-full flex flex-col items-center justify-center transition-all duration-300
           ${textColor}
           ${isSelectedStart || isSelectedEnd 
-            ? "bg-[#1ea0db] !text-white shadow-sm rounded-md scale-90 z-20" 
-            : "hover:bg-slate-100/40"} 
+            ? "bg-[#1ea0db] !text-white shadow-xl rounded-md scale-90 z-20" 
+            : "hover:bg-slate-100"} 
         `}
       >
         <span className="text-xs md:text-sm font-semibold tracking-tight">
