@@ -7,14 +7,13 @@ import {
 } from "date-fns";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useHolidays } from "@/hooks/holyday";
+import { Tooltip } from "./ui/tooltip";
 
-// --- Types ---
 type Holiday = { 
   name: string; 
   description?: string;
   date: { iso: string; }; 
 };
-
 export default function WallCalendarChallenge() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [range, setRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
@@ -57,44 +56,41 @@ export default function WallCalendarChallenge() {
       const isSelectedRange = isInRange(day);
       const isCurrentMonth = isSameDay(startOfMonth(day), startOfMonth(currentMonth));
       
-      // Determine if it's a weekend (0 = Sunday, 6 = Saturday)
       const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-      
       const dayString = format(day, "yyyy-MM-dd");
       const holiday = Array.isArray(holidays) 
         ? holidays.find((h: Holiday) => h.date.iso.split('T')[0] === dayString)
         : undefined;
 
-      // Match the reference image text colors
       let textColor = "text-slate-800 font-medium";
-      if (!isCurrentMonth) textColor = "text-slate-200";
-      else if (isWeekend) textColor = "text-sky-500 font-semibold";
+      if (!isCurrentMonth) textColor = "text-slate-300";
+      else if (isWeekend) textColor = "text-[#1ea0db] font-semibold";
 
       return (
-        <div key={i} className="relative h-12 flex items-center justify-center group">
-          {/* Seamless Range Background (kept subtle for the minimalist look) */}
+        <div key={i} className="relative h-10 md:h-12 flex items-center justify-center group">
+          {/* Seamless Range Background */}
           {isSelectedRange && !isSelectedStart && !isSelectedEnd && (
-            <div className="absolute inset-0 bg-sky-50" />
+            <div className="absolute inset-0 bg-[#e8f6fc]" />
           )}
           {isSelectedStart && range.end && (
-            <div className="absolute inset-y-0 right-0 w-1/2 bg-sky-50" />
+            <div className="absolute inset-y-0 right-0 w-1/2 bg-[#e8f6fc]" />
           )}
           {isSelectedEnd && range.start && (
-            <div className="absolute inset-y-0 left-0 w-1/2 bg-sky-50" />
+            <div className="absolute inset-y-0 left-0 w-1/2 bg-[#e8f6fc]" />
           )}
 
           {/* Date Button */}
           <button
             onClick={() => handleDateClick(day)}
             className={`
-              relative z-10 w-10 h-10 flex items-center justify-center rounded-full text-base transition-all duration-200
+              relative z-10 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full text-sm md:text-base transition-all duration-200
               ${textColor}
-              ${isSelectedStart || isSelectedEnd ? "bg-sky-500 !text-white shadow-md shadow-sky-200 scale-105" : "hover:bg-slate-50"}
+              ${isSelectedStart || isSelectedEnd ? "bg-[#1ea0db] !text-white shadow-md shadow-sky-200 scale-105" : "hover:bg-slate-50"}
             `}
           >
             {format(day, "d")}
             
-            {/* Holiday Dot Indicator */}
+            {/* Holiday Dot */}
             {holiday && (
               <span className={`absolute bottom-0.5 w-1 h-1 rounded-full ${isSelectedStart || isSelectedEnd ? 'bg-white' : 'bg-orange-400'}`} />
             )}
@@ -102,7 +98,9 @@ export default function WallCalendarChallenge() {
 
           {/* Holiday Tooltip */}
           {holiday && (
-           
+            <div className="absolute bottom-full hidden group-hover:block z-50 w-max max-w-[140px] bg-slate-800 text-white text-[10px] px-2 py-1.5 rounded shadow-lg text-center pointer-events-none">
+             <Tooltip>{holiday.name}</Tooltip>
+            </div>
           )}
         </div>
       );
@@ -110,61 +108,66 @@ export default function WallCalendarChallenge() {
   };
 
   return (
-    <div className="bg-[#f8f9fa] flex items-center justify-center p-4 md:p-8 font-sans">
+    <div className="bg-[#e2e8f0] flex items-center justify-center  md:p-12 font-sans">
       
-      <div className="w-full max-w-5xl bg-white rounded-3xl overflow-hidden flex flex-col relative">
-        <img src="../hero.png" alt="" />
-        <div className="flex justify-between items-end mb-12 relative z-10 px-4">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
-              {format(currentMonth, "MMMM yyyy")}
-            </h1>
-            {loading && <Loader2 size={16} className="text-sky-500 animate-spin mt-2" />}
-            {error && <p className="text-xs text-red-500 mt-1">Failed to load holidays</p>}
-          </div>
-          <div className="flex gap-2">
-            <button 
-              onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} 
-              className="p-2 text-slate-400 hover:text-sky-500 hover:bg-sky-50 rounded-full transition-all"
-            >
-              <ChevronLeft size={24}/>
-            </button>
-            <button 
-              onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} 
-              className="p-2 text-slate-400 hover:text-sky-500 hover:bg-sky-50 rounded-full transition-all"
-            >
-              <ChevronRight size={24}/>
-            </button>
-          </div>
-        </div>
+      {/* Main Calendar Card */}
+      <div className="w-full max-w-4xl bg-white shadow-2xl overflow-hidden flex flex-col relative">
+     <div className="card">
+  {/* Layer 1: The Image */}
+  <img src="../hero.jpeg" className="image" alt="Hero" />
+  
+  {/* Layer 2: The Shapes (Decorative) */}
+  <div className="blue-shape"></div> {/* Optional accent */}
+  
+  {/* Layer 3: The Content (Z-index 20 keeps it above the white shape) */}
+  <div className="absolute bottom-6 right-8 md:bottom-10 md:right-10 text-right text-white z-20 drop-shadow-lg">
+    <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter -mb-1 opacity-90">
+      {format(currentMonth, "yyyy")}
+    </h2>
 
-        <div className="flex flex-col md:flex-row gap-12 md:gap-24 relative z-10">
+    <div className="flex items-center justify-end gap-3">
+      {loading && <Loader2 size={24} className="animate-spin text-sky-100" />}
+      <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">
+        {format(currentMonth, "MMMM")}
+      </h1>
+    </div>
+  </div>
+</div>
+        {/* --- BOTTOM CONTENT AREA (Notes + Calendar) --- */}
+        <div className="flex flex-col md:flex-row gap-10 md:gap-16 p-8 md:p-12 bg-white  z-10">
           
-          {/* NOTES AREA (Matches the Ruled Design) */}
-          <div className="w-full md:w-5/12 flex flex-col px-4">
-            <h2 className="text-xl font-bold text-slate-800 mb-4">Notes</h2>
+          {/* LEFT: Notes Area */}
+          <div className="w-full md:w-5/12 flex flex-col">
+            <div className="flex justify-between items-end mb-4">
+              <h2 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Notes</h2>
+              
+              {/* Added subtle Navigation Arrows here so they don't break the layout */}
+              <div className="flex gap-2 text-slate-300">
+                <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="hover:text-[#1ea0db] transition-colors"><ChevronLeft size={20}/></button>
+                <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="hover:text-[#1ea0db] transition-colors"><ChevronRight size={20}/></button>
+              </div>
+            </div>
+
             <textarea 
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              // This style block creates the exact horizontal notebook lines from your image
               style={{
                 lineHeight: '2.5rem',
                 backgroundImage: 'repeating-linear-gradient(transparent, transparent 2.4rem, #cbd5e1 2.4rem, #cbd5e1 2.5rem)',
                 backgroundAttachment: 'local'
               }}
-              className="w-full flex-1 min-h-[300px] resize-none bg-transparent border-none focus:outline-none focus:ring-0 p-0 text-slate-700 placeholder:text-transparent"
+              className="w-full flex-1 min-h-[250px] resize-none bg-transparent border-none focus:outline-none focus:ring-0 p-0 text-slate-700 placeholder:text-transparent"
             />
           </div>
 
-          {/* CALENDAR GRID AREA */}
+          {/* RIGHT: Calendar Grid Area */}
           <div className="w-full md:w-7/12">
             {/* Days of Week Header */}
-            <div className="grid grid-cols-7 text-center mb-6">
+            <div className="grid grid-cols-7 text-center mb-4">
               {["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((d, i) => (
                 <span 
                   key={d} 
-                  // Highlight SAT and SUN in blue
-                  className={`text-[11px] font-bold tracking-wider ${i >= 5 ? 'text-sky-500' : 'text-slate-800'}`}
+                  className={`text-[10px] font-bold tracking-wider mb-2 ${i >= 5 ? 'text-[#1ea0db]' : 'text-slate-800'}`}
                 >
                   {d}
                 </span>
@@ -172,7 +175,7 @@ export default function WallCalendarChallenge() {
             </div>
 
             {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-y-4 gap-x-2">
+            <div className="grid grid-cols-7 gap-y-2 gap-x-1">
               {renderDays()}
             </div>
           </div>
