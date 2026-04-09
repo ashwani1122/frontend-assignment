@@ -11,32 +11,10 @@
 .card {
   position: relative;
   width: 100%;
-  height: 320px; /* Adjust height as needed */
-  overflow: hidden;
+  height: 100vh; /* Adjust height as needed */
   background-color: #f1f5f9;
+  padding: 10px;
 }
 
 /* The actual image background */
-.image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
 
-/* White geometric wave at the bottom */
-
-/* OPTIONAL: The blue accent on the right (like your image) */
-/* To use this, add <div className="blue-shape"></div> in your JSX after white-shape */
-.blue-shape {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 220px;
-  background-color: #1ea0db;
-  z-index: 5; /* Behind the white shape but in front of the image */
-  clip-path: polygon(35% 24%, 100% 67%, 100% 100%, 0% 100%, 0 50%, 0 51%);
-}

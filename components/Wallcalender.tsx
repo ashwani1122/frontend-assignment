@@ -111,23 +111,19 @@ export default function WallCalendarChallenge() {
     <div className="bg-[#e2e8f0] flex items-center justify-center  md:p-12 font-sans">
       
       {/* Main Calendar Card */}
-      <div className="w-full max-w-4xl bg-white shadow-2xl overflow-hidden flex flex-col relative">
+      <div className="w-full max-w-2xl bg-white shadow-2xl overflow-hidden flex flex-col relative">
      <div className="card">
   {/* Layer 1: The Image */}
-  <img src="../hero.jpeg" className="image" alt="Hero" />
+  <img src="../hero.png" className="image overflow-hidden" alt="Hero" />
   
-  {/* Layer 2: The Shapes (Decorative) */}
-  <div className="blue-shape"></div> {/* Optional accent */}
-  
-  {/* Layer 3: The Content (Z-index 20 keeps it above the white shape) */}
-  <div className="absolute bottom-6 right-8 md:bottom-10 md:right-10 text-right text-white z-20 drop-shadow-lg">
+  <div className="absolute bottom-40 right-8 md:bottom-30 md:right-10 text-right text-white z-20 drop-shadow-lg">
     <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter -mb-1 opacity-90">
       {format(currentMonth, "yyyy")}
     </h2>
 
     <div className="flex items-center justify-end gap-3">
       {loading && <Loader2 size={24} className="animate-spin text-sky-100" />}
-      <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">
+      <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none">
         {format(currentMonth, "MMMM")}
       </h1>
     </div>
