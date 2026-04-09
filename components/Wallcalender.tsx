@@ -7,7 +7,6 @@ import {
 } from "date-fns";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useHolidays } from "@/hooks/holyday";
-import { Tooltip } from "./ui/tooltip";
 
 type Holiday = { 
   name: string; 
@@ -123,18 +122,19 @@ export default function WallCalendarChallenge() {
       
       {/* Main Calendar Card */}
       <div className="w-full max-w-2xl bg-white shadow-2xl overflow-hidden flex flex-col relative">
-     <div className="card">
+ <div className="card h-64 md:h-80 relative overflow-hidden">
   {/* Layer 1: The Image */}
   <img src="../hero.png" className="image" alt="Hero" />
-  
-  <div className="absolute bottom-40 right-5 md:bottom-30 md:right-4 text-right text-white z-20 drop-shadow-lg">
-    <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter -mb-1 opacity-90">
+
+  {/* FIXED: Responsive Text Container */}
+  <div className="absolute bottom-4 right-4 md:bottom-25 md:right-4 text-right text-white z-20 drop-shadow-lg max-w-[80%]">
+    <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter -mb-1 md:-mb-2 opacity-80">
       {format(currentMonth, "yyyy")}
     </h2>
 
-    <div className="flex items-center justify-end gap-3">
-      {loading && <Loader2 size={24} className="animate-spin text-sky-100" />}
-      <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none">
+    <div className="flex items-center justify-end gap-2 md:gap-3">
+      {loading && <Loader2 size={18} className="animate-spin text-sky-100 md:w-6 md:h-6" />}
+      <h1 className="text-3xl md:text-6xl font-black uppercase tracking-tighter leading-none">
         {format(currentMonth, "MMMM")}
       </h1>
     </div>
