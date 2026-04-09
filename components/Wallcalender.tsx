@@ -152,7 +152,7 @@ export default function WallCalendarChallenge() {
                 backgroundImage: 'repeating-linear-gradient(transparent, transparent 2.4rem, #cbd5e1 2.4rem, #cbd5e1 2.5rem)',
                 backgroundAttachment: 'local'
               }}
-              className="w-full flex-1 min-h-[250px] resize-none bg-transparent border-none focus:outline-none focus:ring-0 p-0 text-slate-700 placeholder:text-transparent"
+              className="w-full flex-1 min-h-[250px] resize-none bg-transparent border-none focus:outline-none focus:ring-0 p-0 text-slate-700 placeholder:text-transparent no-scrollbar"
             />
           </div>
 
