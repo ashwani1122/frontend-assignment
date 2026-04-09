@@ -83,7 +83,7 @@ export default function WallCalendarChallenge() {
           <button
             onClick={() => handleDateClick(day)}
             className={`
-              relative z-10 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full text-sm md:text-base transition-all duration-200
+              relative cursor-pointer z-10 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full text-sm md:text-base transition-all duration-200
               ${textColor}
               ${isSelectedStart || isSelectedEnd ? "bg-[#1ea0db] !text-white shadow-md shadow-sky-200 scale-105" : "hover:bg-slate-50"}
             `}
@@ -92,7 +92,7 @@ export default function WallCalendarChallenge() {
             
             {/* Holiday Dot */}
             {holiday && (
-              <span className={`absolute bottom-0.5 w-1 h-1 rounded-full ${isSelectedStart || isSelectedEnd ? 'bg-white' : 'bg-orange-400'}`} />
+              <span className={`absolute  bottom-0.5 w-1 h-1 rounded-full ${isSelectedStart || isSelectedEnd ? 'bg-white' : 'bg-orange-400'}`} />
             )}
           </button>
 
@@ -114,9 +114,9 @@ export default function WallCalendarChallenge() {
       <div className="w-full max-w-2xl bg-white shadow-2xl overflow-hidden flex flex-col relative">
      <div className="card">
   {/* Layer 1: The Image */}
-  <img src="../hero.png" className="image overflow-hidden" alt="Hero" />
+  <img src="../hero.png" className="image" alt="Hero" />
   
-  <div className="absolute bottom-40 right-8 md:bottom-30 md:right-10 text-right text-white z-20 drop-shadow-lg">
+  <div className="absolute bottom-40 right-5 md:bottom-30 md:right-4 text-right text-white z-20 drop-shadow-lg">
     <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter -mb-1 opacity-90">
       {format(currentMonth, "yyyy")}
     </h2>
