@@ -5,7 +5,7 @@ import {
   format, addMonths, subMonths, startOfMonth, endOfMonth, 
   startOfWeek, endOfWeek, addDays, isSameDay, isWithinInterval, isBefore 
 } from "date-fns";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useHolidays } from "@/hooks/holyday";
 
 type Holiday = { 
@@ -20,7 +20,6 @@ export default function WallCalendarChallenge() {
 
   const currentYear = currentMonth.getFullYear();
   const { holidays, loading, error } = useHolidays(currentYear, "IN");
-
   // --- Range Selection Logic ---
   const handleDateClick = (day: Date) => {
     if (!range.start || (range.start && range.end)) {
@@ -72,13 +71,13 @@ export default function WallCalendarChallenge() {
         ${isSelectedRange ? "bg-sky-50/30" : "bg-transparent"}
       `}
     >
-      {/* SEAMLESS RANGE BACKGROUND (Very low opacity bridge) */}
       {isSelectedRange && (
-        <div className={`absolute inset-y-0 bg-sky-100/20 z-0
-          ${isSelectedStart ? "left-1/2" : "left-0"} 
-          ${isSelectedEnd ? "right-1/2" : "right-0"}
-        `} />
-      )}
+            <div className={`absolute inset-y-0 bg-sky-100/20 z-0
+              ${isSelectedStart ? "left-1/2" : "left-0"} 
+              ${isSelectedEnd ? "right-1/2" : "right-0"}
+            `} />
+          )}
+     
 
       {/* DATE BOX */}
       <button
@@ -140,6 +139,29 @@ export default function WallCalendarChallenge() {
     </div>
   </div>
 </div>
+{range.start && (
+          <div className="flex justify-center -mt-6 z-30 px-4">
+            <div className="flex items-center gap-3 bg-white border border-slate-100 px-4 py-2 rounded-full shadow-lg animate-in slide-in-from-top-2">
+              <div className="flex flex-col items-start leading-none">
+                <span className="text-[9px] font-bold text-blue-500 uppercase">From</span>
+                <span className="text-xs font-bold text-slate-700">{format(range.start, "MMM dd")}</span>
+              </div>
+              <ArrowRight size={14} className="text-slate-300" />
+              <div className="flex flex-col items-start leading-none">
+                <span className="text-[9px] font-bold text-blue-500 uppercase">To</span>
+                <span className="text-xs font-bold text-slate-700">
+                  {range.end ? format(range.end, "MMM dd") : "..."}
+                </span>
+              </div>
+              <button 
+                onClick={() => setRange({ start: null, end: null })}
+                className="ml-2 text-[10px] bg-slate-100 hover:bg-red-50 hover:text-red-500 px-2 py-1 rounded-md transition-colors font-bold uppercase"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        )}
         {/* --- BOTTOM CONTENT AREA (Notes + Calendar) --- */}
         <div className="flex flex-col md:flex-row gap-10 md:gap-16 p-8 md:p-12 bg-white  z-10">
           
