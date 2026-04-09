@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_KEY = "lqelB0KAjMMsFfKIGLXkn7WdrTDlAmXL";
+const API_KEY = process.env.NEXT_PUBLIC_CALENDARIFIC_API_KEY;;
 type Holiday = {
   name: string;
   description: string;
