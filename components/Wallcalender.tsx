@@ -51,60 +51,71 @@ export default function WallCalendarChallenge() {
     }
 
     return dayArray.map((day, i) => {
-      const isSelectedStart = range.start && isSameDay(day, range.start);
-      const isSelectedEnd = range.end && isSameDay(day, range.end);
-      const isSelectedRange = isInRange(day);
-      const isCurrentMonth = isSameDay(startOfMonth(day), startOfMonth(currentMonth));
-      
-      const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-      const dayString = format(day, "yyyy-MM-dd");
-      const holiday = Array.isArray(holidays) 
-        ? holidays.find((h: Holiday) => h.date.iso.split('T')[0] === dayString)
-        : undefined;
+  const isSelectedStart = range.start && isSameDay(day, range.start);
+  const isSelectedEnd = range.end && isSameDay(day, range.end);
+  const isSelectedRange = isInRange(day);
+  const isCurrentMonth = isSameDay(startOfMonth(day), startOfMonth(currentMonth));
+  
+  const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+  const dayString = format(day, "yyyy-MM-dd");
+  const holiday = Array.isArray(holidays) 
+    ? holidays.find((h: Holiday) => h.date.iso.split('T')[0] === dayString)
+    : undefined;
 
-      let textColor = "text-slate-800 font-medium";
-      if (!isCurrentMonth) textColor = "text-slate-300";
-      else if (isWeekend) textColor = "text-[#1ea0db] font-semibold";
+  let textColor = "text-slate-700 font-medium";
+  if (!isCurrentMonth) textColor = "text-slate-200"; // Very light for outside month
+  else if (isWeekend && !isSelectedStart && !isSelectedEnd) textColor = "text-sky-400 font-semibold";
 
-      return (
-        <div key={i} className="relative h-10 md:h-12 flex items-center justify-center group">
-          {/* Seamless Range Background */}
-          {isSelectedRange && !isSelectedStart && !isSelectedEnd && (
-            <div className="absolute inset-0 bg-[#e8f6fc]" />
-          )}
-          {isSelectedStart && range.end && (
-            <div className="absolute inset-y-0 right-0 w-1/2 bg-[#e8f6fc]" />
-          )}
-          {isSelectedEnd && range.start && (
-            <div className="absolute inset-y-0 left-0 w-1/2 bg-[#e8f6fc]" />
-          )}
+  return (
+    <div 
+      key={i} 
+      className={`relative aspect-square flex items-center justify-center group border-r border-b border-slate-50 transition-colors
+        ${isSelectedRange ? "bg-sky-50/30" : "bg-transparent"}
+      `}
+    >
+      {/* SEAMLESS RANGE BACKGROUND (Very low opacity bridge) */}
+      {isSelectedRange && (
+        <div className={`absolute inset-y-0 bg-sky-100/20 z-0
+          ${isSelectedStart ? "left-1/2" : "left-0"} 
+          ${isSelectedEnd ? "right-1/2" : "right-0"}
+        `} />
+      )}
 
-          {/* Date Button */}
-          <button
-            onClick={() => handleDateClick(day)}
-            className={`
-              relative cursor-pointer z-10 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full text-sm md:text-base transition-all duration-200
-              ${textColor}
-              ${isSelectedStart || isSelectedEnd ? "bg-[#1ea0db] !text-white shadow-md shadow-sky-200 scale-105" : "hover:bg-slate-50"}
-            `}
-          >
-            {format(day, "d")}
-            
-            {/* Holiday Dot */}
-            {holiday && (
-              <span className={`absolute  bottom-0.5 w-1 h-1 rounded-full ${isSelectedStart || isSelectedEnd ? 'bg-white' : 'bg-orange-400'}`} />
-            )}
-          </button>
+      {/* DATE BOX */}
+      <button
+        onClick={() => handleDateClick(day)}
+        className={`
+          relative z-10 w-full h-full flex flex-col items-center justify-center transition-all duration-300
+          ${textColor}
+          ${isSelectedStart || isSelectedEnd 
+            ? "bg-[#1ea0db] !text-white shadow-sm rounded-md scale-90 z-20" 
+            : "hover:bg-slate-100/40"} 
+        `}
+      >
+        <span className="text-xs md:text-sm font-semibold tracking-tight">
+          {format(day, "d")}
+        </span>
+        
+        {/* HOLIDAY DOT (Bottom Right) */}
+        {holiday && (
+          <span className={`absolute bottom-1 right-1 w-1 h-1 rounded-full
+            ${isSelectedStart || isSelectedEnd ? 'bg-white' : 'bg-orange-300'}
+          `} />
+        )}
+      </button>
 
-          {/* Holiday Tooltip */}
-          {holiday && (
-            <div className="absolute bottom-full hidden group-hover:block z-50 w-max max-w-[140px] bg-slate-800 text-white text-[10px] px-2 py-1.5 rounded shadow-lg text-center pointer-events-none">
-             <Tooltip>{holiday.name}</Tooltip>
-            </div>
-          )}
+      {/* PRETTIER TOOLTIP */}
+      {holiday && (
+        <div className="absolute bottom-[105%] hidden group-hover:flex flex-col items-center z-50 animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-slate-900/90 backdrop-blur-sm text-white text-[9px] px-2 py-1 rounded shadow-xl border border-white/10">
+             {holiday.name}
+          </div>
+          <div className="w-1.5 h-1.5 bg-slate-900/90 rotate-45 -mt-[4px]" />
         </div>
-      );
-    });
+      )}
+    </div>
+  );
+});
   };
 
   return (
